@@ -27,20 +27,53 @@
    
    const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
 
+
+
+
+const { useState } = React
+
+function Modal({
+      title, 
+      content, 
+      show = false, 
+      onClose = () => {},
+      onConfirm = () => {}
+  }){
+      return show && ReactDOM.createPortal(
+          <div className="modal-container">
+              <div className="modal">
+                  <h2>{title}</h2>
+                  <div>{content}</div>
+                  <button onClick={onClose}>Annulla</button>
+                  <button onClick={onConfirm}>Conferma</button>
+              </div>
+          </div>,
+          document.body
+      )
+  }
       const ListaAnimali = () => {
      
-        const [animali, setAnimali] = React.useState([]);
+        const [animali, setAnimali] = useState([]);
+        
+        const [show , setShow] = useState(false)
+
+        const [inserimento , setInserimento] = useState("")
 
         const aggiungiAnimaleCasuale = () => {
-          const indiceCasuale = Math.floor(Math.random() * animalsChoices);
-          const animaleCasuale = animalsChoices[indiceCasuale];
-          setAnimali([...animali, animaleCasuale]);
+         setAnimali([...animali , inserimento])
+         setShow(false)
         };
+
+        const trueModale = () =>  setShow(true)
+         
+        
+
+     
 
         return (
           <div>
             <button 
-              onClick={aggiungiAnimaleCasuale}>
+              onClick={trueModale}>
               Aggiungi Animale 
             </button>
 
@@ -52,6 +85,19 @@
                 ))}
               </ul>
             </details>
+            <Modal
+            show={show}
+            onClose={trueModale}
+            onConfirm={aggiungiAnimaleCasuale}
+            title="aggiungi animale"
+            content={
+              <input
+              type="text"
+              value={inserimento}
+              onChange={e => setInserimento(e.target.value)}
+              />
+            }
+            />
           </div>
         );
       };
