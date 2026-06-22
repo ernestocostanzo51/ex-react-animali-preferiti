@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 </head>
 <body>
@@ -24,21 +23,40 @@
       <p>Creato con amore da... un collega sbadato! 🐾</p>
     </footer>
 
-    <script type="text/babel">
+<script type="text/babel">
+   
+   const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
+
       const ListaAnimali = () => {
-        const animali = ["cane" , "gatto" , "volpe" , "criceto"];
+     
+        const [animali, setAnimali] = React.useState([]);
+
+        const aggiungiAnimaleCasuale = () => {
+          const indiceCasuale = Math.floor(Math.random() * animalsChoices);
+          const animaleCasuale = animalsChoices[indiceCasuale];
+          setAnimali([...animali, animaleCasuale]);
+        };
+
         return (
-          <details>
-            <summary>Animali</summary>
-            <ul>
-              {animali.map((animale , i) => (
-                <li key={i}>{animale}</li>
-              ))}
-            </ul>
-          </details>
+          <div>
+            <button 
+              onClick={aggiungiAnimaleCasuale}>
+              Aggiungi Animale 
+            </button>
+
+            <details>
+              <summary>Animali ({animali.length})</summary>
+              <ul>
+                {animali.map((animale, i) => (
+                  <li key={i}>{animale}</li>
+                ))}
+              </ul>
+            </details>
+          </div>
         );
       };
 
+   
       const { createRoot } = ReactDOM;
       const listaAnimali = document.querySelector(".lista-animali");
       const root = createRoot(listaAnimali);
